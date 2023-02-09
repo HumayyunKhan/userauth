@@ -1,12 +1,14 @@
 const httpStatus = require('http-status');
 const jwtHelper = require('../helpers/jwt');
-const db =require( )
+const db =require( "../db/models")
 
 // eslint-disable-next-line consistent-return
-const checkToken = (req, res, next) => {
+const checkToken = async(req, res, next) => {
   let token = req.headers.authorization;
-
-  if (token) {
+  let dbToken=token.replace("Bearer ","")
+let existToken=await db.Users.findOne({where:{token:dbToken}})
+console.log(existToken)
+  if (existToken) {
     if (token.startsWith('Bearer ')) {
       token = token.slice(7, token.length);
     }
